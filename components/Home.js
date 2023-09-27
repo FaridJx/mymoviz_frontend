@@ -52,20 +52,19 @@ function Home() {
     fetch('https://mymoviz-backend-nine-lemon.vercel.app/movies')
     .then(response => response.json())
     .then(data => {
-      // console.log(data);
-        // const {original_title, overview, poster_path, vote_average, vote_count} = data
-      // for(let i = 0; i < movie.length; i++){
-        // console.log(movie[i].original_title, movie[i].overview, movie[i].poster_path);
-        // console.log({original_title, overview, poster_path, vote_average, vote_count});
-        // }
-        let array = []
-        for(let i of data.movies){
-          array.push({title:i.original_title, poster:'https://www.themoviedb.org/t/p/w220_and_h330_face/'+i.poster_path, vote_average:i.vote_average, vote_count:i.vote_count, overview:i.overview.substring(0, 250)+'...'})
-        }
-        setMovie(array);
-        console.log(array)
-    });
-  }, []);
+        const formattedData = data.movies.map((movie)=> {
+          const poster = `https://www.themoviedb.org/t/p/w220_and_h330_face/${movie.poster_path}`
+
+          // console.log(movie.vote_count)
+          let overview = movie.overview
+          if(overview.length > 250){
+           overview = overview.substring(0, 250)+"..."
+          }
+          return {title: movie.title, poster, vote_average: movie.vote_average, vote_count: movie.vote_count, overview}
+        })
+        setMovie(formattedData);
+      });
+    }, []);
 
 
 
